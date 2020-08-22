@@ -1,0 +1,92 @@
+module sample(year,month,date,day,res);
+
+ input [15:0] year;
+ input [3:0] month;
+ input [4:0] date;
+ output [2:0] day;
+ output [7:0] res;
+
+ reg [5:0]yy;
+
+ assign res = (y(year)+century(year/100)+date+mon(month)-leap_year(year));
+//Intermediate result(not required)
+ assign day = res%7; //Final answer
+ initial
+ begin
+ if(day == 2'd0)
+ $display("SUNDAY");
+ else if(day == 2'd1)
+ $display("MONDAY");
+ else if(day == 2'd2)
+ $display("TUESDAY");
+ else if(day == 2'd3)
+ $display("WEDNESDAY");
+ else if(day == 3'd4)
+ $display("THURSDAY");
+ else if(day == 3'd5)
+ $display("FRIDAY");
+ else if(day == 3'd6)
+ $display("SATURDAY");
+ else
+ $display("INVALID ");
+ end
+function [14:0] y; //Generating year code
+ input [14:0]year;
+ begin
+ assign yy = year%100;
+ assign y = (yy+(yy/4))%7;
+ end
+
+endfunction
+function [3:0] mon; //Generating month code
+ input [3:0] month;
+ if(month == 4'd1)
+ mon = 3'd0;
+ else if(month == 4'd2)
+ mon = 3'd3;
+ else if(month == 4'd3)
+ mon = 3'd3;
+ else if(month == 4'd4)
+ mon = 3'd6;
+ else if(month == 4'd5)
+ mon = 3'd1;
+ else if(month == 4'd6)
+ mon = 3'd4;
+ else if(month == 4'd7)
+ mon = 3'd6;
+ else if(month == 4'd8)
+ mon = 3'd2;
+ else if(month == 4'd9)
+ mon = 3'd5;
+ else if(month == 4'd10)
+ mon = 3'd0;
+ else if(month == 4'd11)
+ mon = 3'd3;
+ else if(month == 4'd12)
+ mon = 3'd5;
+ else
+ $display("INVALID");
+endfunction
+function [3:0]century( input [15:0] year); //Generating century code
+ if(year == 5'd17)
+ century = 4'd7;
+ else if (year == 5'd18)
+ century = 4'd5;
+ else if (year == 5'd19)
+ century = 4'd3;
+ else if (year == 5'd20)
+ century = 4'd6;
+ else if (year == 5'd21)
+ century = 4'd4;
+ else if (year == 5'd22)
+ century = 4'd2;
+ else if(year == 5'd23)
+ century = 4'd0;
+ else
+ $display ("GIVE ANOTHER YEAR");
+endfunction
+function leap_year(input [15:0] year); //Checks if it is a leap year
+ begin
+ assign leap_year=(month == 4'd1 || month == 4'd2)?((year%400==1'b0 ||
+year%4==1'b0)?1:0):0;
+ end
