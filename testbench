@@ -1,0 +1,19 @@
+module sample_tb();
+reg [15:0] year;
+reg [3:0] month;
+reg [4:0] date;
+wire [2:0] day;
+sample s1(year,month,date,day);
+initial
+begin;
+#10year = 16'd1988;
+#10month=4'd9;
+#10date=5'd4;
+#20year=16'd2019;
+#20month=4'd04;
+#20date=5'd4;
+#30year=16'd2167;
+#30month=4'd02;
+#30date=5'd6;
+end
+endmodule
